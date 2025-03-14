@@ -47,7 +47,7 @@ const SignIn = () => {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
+            autoComplete="off"
             autoFocus
             value={formData.email}
             onChange={handleChange}
