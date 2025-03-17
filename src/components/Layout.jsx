@@ -14,11 +14,11 @@ function Layout() {
                     flexGrow: 1,
                     p: 3,
                     width: { sm: `calc(100% - 240px)` },
-                    ml: { sm: '240px' }
+                    // ml: { sm: '240px' }
                 }}
             >
-                <Toolbar /> {/* This creates space below app bar */}
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                <Toolbar />
+                <Container maxWidth="xl" sx={{ pl: '0px !important', pt: 3, pb: 3, m:0  }}>
                     <Outlet />
                 </Container>
             </Box>
