@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   Outlet,
+  Navigate,
 } from "react-router-dom";
 import { AuthProvider } from "./context/Auth.context.jsx";
 import ListPage from "./pages/Blog/ListPage.jsx";
