@@ -13,10 +13,13 @@ const FavouriteSlice = createSlice({
     addBlogFav: (state, action) => {
       state.blogs.push(action.payload);
     },
+    addProdFav: (state, action) => {
+      state.products.push(action.payload);
+    },
   },
 });
 
-export const { addBlogFav } = FavouriteSlice.actions;
+export const { addBlogFav, addProdFav } = FavouriteSlice.actions;
 
 export default FavouriteSlice.reducer;
 

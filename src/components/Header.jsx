@@ -13,7 +13,7 @@ import {
 import { Favorite } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../context/Auth.context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFav } from "../redux/slices/favourite.slice";
 
 function Header() {
@@ -63,7 +63,9 @@ function Header() {
         <Box>
           <IconButton color="inherit">
             <Badge badgeContent={favCount} color="error">
-              <Favorite />
+              <Link to="/favourite/list">
+                <Favorite />
+              </Link>
             </Badge>
           </IconButton>
           <IconButton

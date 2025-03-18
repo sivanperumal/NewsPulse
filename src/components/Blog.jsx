@@ -16,6 +16,7 @@ export default function BlogCard(props) {
   const handleAddWishlist = (data) => {
     dispatch(addBlogFav(data));
   };
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia component="img" alt={title} height="300" image={urlToImage} />
@@ -40,9 +41,11 @@ export default function BlogCard(props) {
             View
           </Link>
         </Button>
-        <Button size="small" onClick={() => handleAddWishlist(props.data)}>
-          Add to Wishlist
-        </Button>
+        {!props.fav && (
+          <Button size="small" onClick={() => handleAddWishlist(props.data)}>
+            Add to Wishlist
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

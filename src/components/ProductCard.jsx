@@ -5,9 +5,16 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useDispatch } from "react-redux";
+import { addProdFav } from "../redux/slices/favourite.slice";
+import { Link } from "react-router";
 
 function ProductCard(props) {
   const product = props.data;
+  const dispatch = useDispatch();
+  const handleAddWishlist = (product) => {
+    dispatch(addProdFav(product));
+  };
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -24,8 +31,14 @@ function ProductCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Button size="small">
+          <Link to={`/product/${product.id}`}>View</Link>
+        </Button>
+        {!props.fav && (
+          <Button size="small" onClick={() => handleAddWishlist(product)}>
+            Add Wishlist
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

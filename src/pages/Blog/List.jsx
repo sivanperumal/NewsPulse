@@ -15,7 +15,7 @@ function List() {
     <Grid container spacing={2}>
       {blogs.map((blog, index) => (
         <Grid size={3} key={index}>
-          <BlogCard data={blog} />
+          <BlogCard data={blog} fav={false} />
         </Grid>
       ))}
     </Grid>
