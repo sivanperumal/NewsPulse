@@ -16,7 +16,6 @@ export default function BlogCard(props) {
   const handleAddWishlist = (data) => {
     dispatch(addBlogFav(data));
   };
-
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia component="img" alt={title} height="300" image={urlToImage} />
