@@ -2,9 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-export const getBlogs = createAsyncThunk('GetBlogs', async () =>  {
+export const getBlogs = createAsyncThunk('GetBlogs', async (payload) =>  {
     try {
-        const res = await axios.get('https://fakestoreapi.com/users')
+        const res = await axios.get(`https://newsapi.org/v2/everything?q=${payload}&apiKey=de655ada20fc41e0928eae9223445c99`)
         return res.data
     } catch (e) {
         console.log(e)
@@ -15,7 +15,7 @@ export const getBlogs = createAsyncThunk('GetBlogs', async () =>  {
 const BlogsSlice = createSlice({
     name: 'blogs',
     initialState: {
-        data: [],
+        data: {},
         loading: false,
         error: null
     },
