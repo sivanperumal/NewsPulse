@@ -5,7 +5,7 @@ import Loader from "../../components/Loader";
 
 function List() {
   const { data, loading, error } = useBlogs();
-  const blogs = data?.articles ?? [];
+  const blogs = data.articles ?? [];
 
   if (loading) {
     return <Loader />;
