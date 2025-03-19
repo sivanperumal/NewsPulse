@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
+
 import {
   AppBar,
   Box,
