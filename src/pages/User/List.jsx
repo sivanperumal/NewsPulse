@@ -27,9 +27,25 @@ function List() {
     const name = user.name.firstname + " " + user.name.lastname;
     return name.toLowerCase().includes(searchTerm.toLowerCase());
   });
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
-      <Title entity="User" />
+      <Title
+        entity="Users"
+        buttonLabel="Add New User"
+        open={open}
+        onOpenModal={handleClickOpen}
+        onCloseModal={handleClose}
+      />
       <Grid container sx={{ mb: 5 }}>
         <Grid size={4}>
           <Box sx={{ display: "flex" }}>
@@ -49,7 +65,6 @@ function List() {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell align="right">Address</TableCell>
               <TableCell align="right">Email</TableCell>
               <TableCell align="right">Phone</TableCell>
             </TableRow>
@@ -66,7 +81,7 @@ function List() {
                   <TableCell component="th" scope="row">
                     {`${user.name.firstname} ${user.name.lastname}`}
                   </TableCell>
-                  <TableCell align="right">{`${user.address.city} ${user.address.street}`}</TableCell>
+                  {/* <TableCell align="right">{`${user.address.city} ${user.address.street}`}</TableCell> */}
                   <TableCell align="right">{user.email}</TableCell>
                   <TableCell align="right">{user.phone}</TableCell>
                 </TableRow>

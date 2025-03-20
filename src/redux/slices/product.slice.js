@@ -20,7 +20,11 @@ const ProductSlice = createSlice({
     loading: false,
     error: "",
   },
-  reducers: {},
+  reducers: {
+    addProductLocal: (state, action) => {
+      state.data = [action.payload, ...state.data];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(GetProducts.pending, (state) => {
       state.loading = true;
@@ -35,7 +39,7 @@ const ProductSlice = createSlice({
     });
   },
 });
-
+export const { addProductLocal } = ProductSlice.actions;
 export default ProductSlice.reducer;
 
 export const useProducts = () => {
