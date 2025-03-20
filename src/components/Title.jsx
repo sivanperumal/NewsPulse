@@ -1,9 +1,9 @@
-import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import AddIcon from "@mui/icons-material/Add";
 
-function Title(props) {
+import ModalDialog from "./ModalDialog";
+function Title({ entity, buttonLabel, open, onOpenModal, onCloseModal }) {
   return (
     <>
       <Grid container spacing={2} sx={{ marginBottom: "25px" }}>
@@ -17,16 +17,22 @@ function Title(props) {
           >
             {/* Left Side - Page Title */}
             <Typography variant="h5" fontWeight="bold">
-              {`${props.entity}s`}
+              {entity}
             </Typography>
 
             {/* Right Side - Add New Product Button */}
-            <Button variant="contained" color="primary" startIcon={<AddIcon />}>
-              {`Add New ${props.entity}`}
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              onClick={onOpenModal}
+            >
+              {buttonLabel}
             </Button>
           </Box>
         </Grid>
       </Grid>
+      <ModalDialog open={open} onCloseModal={onCloseModal} entity={entity} />
     </>
   );
 }

@@ -17,7 +17,11 @@ const UserSlice = createSlice({
     loading: false,
     error: "",
   },
-  reducers: {},
+  reducers: {
+    addUsersLocal: (state, action) => {
+      state.data = [action.payload, ...state.data];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(GetUsers.pending, (state) => {
       state.loading = true;
@@ -32,6 +36,7 @@ const UserSlice = createSlice({
     });
   },
 });
+export const { addUsersLocal } = UserSlice.actions;
 export default UserSlice.reducer;
 
 export const useListUsers = () => {

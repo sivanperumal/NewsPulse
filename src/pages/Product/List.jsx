@@ -21,10 +21,25 @@ function List() {
   const FilteredProducts = data.filter((product) => {
     return product.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Title entity="Product" />
+      <Title
+        entity="Products"
+        buttonLabel="Add New Product"
+        open={open}
+        onOpenModal={handleClickOpen}
+        onCloseModal={handleClose}
+      />
       <Grid container sx={{ mb: 5 }}>
         <Grid size={4}>
           <Box sx={{ display: "flex" }}>
