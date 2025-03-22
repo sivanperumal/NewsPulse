@@ -28,6 +28,7 @@ https://newsapi.org/docs/endpoints/everything
 
 API Key: de655ada20fc41e0928eae9223445c99
 
+https://newsapi.org/v2/everything?q={query}&apiKey=de655ada20fc41e0928eae9223445c99
 
 # Desgign
 

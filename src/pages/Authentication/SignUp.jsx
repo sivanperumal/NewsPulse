@@ -47,7 +47,7 @@ const SignUp = () => {
             id="username"
             label="Username"
             name="username"
-            autoComplete="username"
+            autoComplete="off"
             autoFocus
             value={formData.username}
             onChange={handleChange}
@@ -59,7 +59,7 @@ const SignUp = () => {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
+            autoComplete="off"
             value={formData.email}
             onChange={handleChange}
           />
@@ -71,7 +71,7 @@ const SignUp = () => {
             label="Password"
             type="password"
             id="password"
-            autoComplete="new-password"
+            autoComplete="off"
             value={formData.password}
             onChange={handleChange}
           />
