@@ -14,12 +14,24 @@ const UserSlice = createSlice({
   name: "UserSlice",
   initialState: {
     data: [],
+    selectedUser: {},
     loading: false,
     error: "",
   },
   reducers: {
     addUsersLocal: (state, action) => {
       state.data = [action.payload, ...state.data];
+    },
+    selectedUserLocal: (state, action) => {
+      state.selectedUser = action.payload;
+    },
+    updateUserLocal: (state, action) => {
+      state.data = state.data.map((user) => {
+        return user.id === action.payload.id ? action.payload : user;
+      });
+    },
+    removeUserLocal: (state, action) => {
+      state.data = state.data.filter((user) => user.id !== action.payload.id);
     },
   },
   extraReducers: (builder) => {
@@ -36,7 +48,12 @@ const UserSlice = createSlice({
     });
   },
 });
-export const { addUsersLocal } = UserSlice.actions;
+export const {
+  addUsersLocal,
+  selectedUserLocal,
+  updateUserLocal,
+  removeUserLocal,
+} = UserSlice.actions;
 export default UserSlice.reducer;
 
 export const useListUsers = () => {

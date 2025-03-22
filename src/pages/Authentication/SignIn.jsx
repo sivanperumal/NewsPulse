@@ -1,29 +1,37 @@
-import { useState } from 'react';
-import { Box, Button, Container, TextField, Typography, Link } from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/Auth.context';
+import { useState } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  Link,
+} from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/Auth.context";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
   const { login } = useAuth();
+
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle sign in logic here
-    console.log(formData);
     login(formData);
-    navigate('/blogs');
+    localStorage.setItem("themeMode", "light");
+    navigate("/blogs");
   };
 
   return (
@@ -31,9 +39,9 @@ const SignIn = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Typography component="h1" variant="h5">
@@ -73,7 +81,7 @@ const SignIn = () => {
           >
             Sign In
           </Button>
-          <Box sx={{ textAlign: 'center' }}>
+          <Box sx={{ textAlign: "center" }}>
             <Link component={RouterLink} to="/signup" variant="body2">
               Don't have an account? Sign Up
             </Link>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   AppBar,
   Box,
@@ -9,18 +9,20 @@ import {
   Typography,
   Avatar,
   Badge,
+  ToggleButton,
 } from "@mui/material";
-import { Favorite } from "@mui/icons-material";
+import { Brightness4, Brightness7, Favorite } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../context/Auth.context";
 import { Link, useNavigate } from "react-router-dom";
 import { useFav } from "../redux/slices/favourite.slice";
+import { useTheme } from "../context/theme.context";
 
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { logout } = useAuth();
   const navigate = useNavigate();
-
+  const { theme, toggleTheme } = useTheme();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -44,23 +46,54 @@ function Header() {
   return (
     <AppBar
       position="fixed"
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        backgroundColor: `${theme.palette.header.background}`,
+      }}
     >
       <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
           edge="start"
-          sx={{ mr: 2 }}
+          sx={{ mr: 2, color: `${theme.palette.header.color}` }}
         >
           <MenuIcon />
         </IconButton>
 
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1, color: `${theme.palette.header.color}` }}
+        >
           Blog Dashboard
         </Typography>
 
         <Box>
+          <ToggleButton
+            value="check"
+            onClick={toggleTheme}
+            sx={{ border: `none` }}
+          >
+            {theme.palette.mode === "light" ? (
+              <Brightness4
+                sx={{
+                  color: `${theme.palette.header.color}`,
+                }}
+              />
+            ) : (
+              <Brightness7
+                sx={{
+                  color: `${theme.palette.header.color}`,
+                }}
+              />
+            )}
+            {/* <CheckIcon
+              sx={{
+                color: `${theme.palette.color}`,
+              }}
+            /> */}
+          </ToggleButton>
           <IconButton color="inherit">
             <Badge badgeContent={favCount} color="error">
               <Link to="/favourite/list">

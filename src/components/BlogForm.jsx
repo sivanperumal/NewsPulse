@@ -6,85 +6,70 @@ import {
   Typography,
   Grid2 as Grid,
 } from "@mui/material";
+import { addBlogLocal } from "../redux/slices/blog.slice";
 import { useDispatch } from "react-redux";
-import { addProductLocal } from "../redux/slices/product.slice";
 
-const ProductForm = ({ onCloseModal }) => {
+function BlogForm({ onCloseModal }) {
   const dispatch = useDispatch();
-  const [product, setProduct] = useState({
+  const getCurrentISOTime = () => {
+    return new Date().toISOString();
+  };
+  const [blog, setBlog] = useState({
     title: "",
-    price: "",
     description: "",
-    category: "",
+    url: "",
+    publishedAt: getCurrentISOTime(),
+    urlToImage: "https://gizmodo.com/app/uploads/2025/03/NASA-Crew-10.jpg",
   });
-
-  const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const productList = { id: Date.now(), ...product };
-    dispatch(addProductLocal(productList));
-    onCloseModal();
-  };
-
   useEffect(() => {
     return () => {
-      setProduct({
+      setBlog({
         title: "",
-        price: "",
         description: "",
-        category: "",
+        url: "",
       });
     };
   }, []);
 
+  const handleOnChange = (e) => {
+    setBlog({ ...blog, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addBlogLocal(blog));
+    onCloseModal();
+  };
   return (
     <Container maxWidth="sm">
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          <Grid item xs={12} size={12}>
+          <Grid size={12}>
             <TextField
               fullWidth
               label="Title"
               name="title"
-              value={product.title}
-              onChange={handleChange}
               required
+              onChange={handleOnChange}
             />
           </Grid>
-          <Grid item xs={12} size={12}>
-            <TextField
-              fullWidth
-              label="Price"
-              name="price"
-              type="number"
-              value={product.price}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} size={12}>
+          <Grid size={12}>
             <TextField
               fullWidth
               label="Description"
               name="description"
               multiline
               rows={3}
-              value={product.description}
-              onChange={handleChange}
               required
+              onChange={handleOnChange}
             />
           </Grid>
-          <Grid item xs={12} size={12}>
+          <Grid size={12}>
             <TextField
               fullWidth
-              label="Category"
-              name="category"
-              value={product.category}
-              onChange={handleChange}
+              label="Blog URL"
+              name="blogUrl"
               required
+              onChange={handleOnChange}
             />
           </Grid>
         </Grid>
@@ -109,5 +94,6 @@ const ProductForm = ({ onCloseModal }) => {
       </form>
     </Container>
   );
-};
-export default ProductForm;
+}
+
+export default BlogForm;
