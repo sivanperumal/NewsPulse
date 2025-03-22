@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import ProductCard from "../../components/ProductCard";
@@ -6,22 +6,28 @@ import { useDispatch } from "react-redux";
 import { GetProducts, useProducts } from "../../redux/slices/product.slice";
 import Title from "../../components/Title";
 import Input from "@mui/joy/Input";
+import ModalDialog from "../../components/ModalDialog";
+import ProductForm from "../../components/ProductForm";
 
 function List() {
   const dispatch = useDispatch();
-  const { data, loading } = useProducts();
   const [searchTerm, setSearchTerm] = useState("");
-  const handleOnTerm = (termVal) => {
-    setSearchTerm(termVal);
-  };
+  const [open, setOpen] = useState(false);
+  const { data, loading } = useProducts();
+
+  const FilteredProducts = useMemo(() => {
+    return data.filter((product) => {
+      return product.title.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  }, [data, searchTerm]);
+
   useEffect(() => {
     dispatch(GetProducts());
   }, []);
 
-  const FilteredProducts = data.filter((product) => {
-    return product.title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
-  const [open, setOpen] = useState(false);
+  const handleOnTerm = (e) => {
+    setSearchTerm(e.target.name);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,16 +42,14 @@ function List() {
       <Title
         entity="Products"
         buttonLabel="Add New Product"
-        open={open}
         onOpenModal={handleClickOpen}
-        onCloseModal={handleClose}
       />
       <Grid container sx={{ mb: 5 }}>
         <Grid size={4}>
           <Box sx={{ display: "flex" }}>
             <Input
               size="md"
-              onChange={(e) => handleOnTerm(e.target.value)}
+              onChange={handleOnTerm}
               placeholder="Search..."
               fullWidth
               sx={{ mr: 2 }}
@@ -67,6 +71,11 @@ function List() {
           })
         )}
       </Grid>
+      {open && (
+        <ModalDialog open={open} onCloseModal={handleClose} title="Add product">
+          <ProductForm onCloseModal={handleClose} />
+        </ModalDialog>
+      )}
     </Box>
   );
 }

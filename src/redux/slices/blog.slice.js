@@ -17,11 +17,17 @@ export const getBlogs = createAsyncThunk("GetBlogs", async (payload) => {
 const BlogsSlice = createSlice({
   name: "blogs",
   initialState: {
-    data: {},
+    data: {
+      articles: [],
+    },
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    addBlogLocal: (state, action) => {
+      state.data.articles = [action.payload, ...state.data.articles];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getBlogs.pending, (state) => {
       state.loading = true;
@@ -38,7 +44,7 @@ const BlogsSlice = createSlice({
   },
 });
 
-// export const { } = BlogsSlice.actions;
+export const { addBlogLocal } = BlogsSlice.actions;
 
 export default BlogsSlice.reducer;
 

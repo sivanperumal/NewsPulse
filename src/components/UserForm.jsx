@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -7,68 +7,87 @@ import {
   Grid2 as Grid,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addUsersLocal } from "../redux/slices/user.slice";
+import {
+  addUsersLocal,
+  updateUserLocal,
+  useListUsers,
+} from "../redux/slices/user.slice";
 
-const UserForm = ({ onCloseModal }) => {
-  const [name, setName] = useState({
-    firstname: "",
-    lastname: "",
-  });
-  const [user, setUser] = useState({
-    phone: "",
-    email: "",
-  });
+const UserForm = ({ onCloseModal, formAction }) => {
+  const dispatch = useDispatch();
+  const { selectedUser } = useListUsers();
+  const [user, setUser] = useState(
+    formAction === "addForm"
+      ? {
+          name: { firstname: "", lastname: "" },
+          phone: "",
+          email: "",
+        }
+      : {
+          ...selectedUser,
+        }
+  );
 
   const handleChange = (e) => {
-    setUser({
-      name: name,
-      ...user,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "firstname" || e.target.name === "lastname") {
+      setUser({
+        ...user,
+        name: { ...user.name, [e.target.name]: e.target.value },
+      });
+    } else {
+      setUser({
+        ...user,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
-  const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addUsersLocal({ id: Date.now(), ...user }));
-    setName({
-      firstname: "",
-      lastname: "",
-    });
-    setUser({
-      phone: "",
-      email: "",
-    });
+    if (formAction === "addForm") {
+      dispatch(addUsersLocal({ id: Date.now(), ...user }));
+    } else {
+      dispatch(updateUserLocal(user));
+    }
+
+    setUser("");
     onCloseModal();
   };
 
+  // useEffect(() => {
+  //   return () => {
+  //     setUser({
+  //       name: { firstname: "", lastname: "" },
+  //       phone: "",
+  //       email: "",
+  //     });
+  //   };
+  // }, []);
   return (
     <Container maxWidth="sm">
-      <Typography variant="h5" gutterBottom>
-        User Form
-      </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid size={12}>
             <TextField
               fullWidth
               label="First Name"
-              name="firstName"
-              value={name.firstname}
-              onChange={(e) => setName({ ...name, firstname: e.target.value })}
+              value={user.name.firstname}
+              name="firstname"
+              onChange={handleChange}
               required
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={12}>
             <TextField
               fullWidth
               label="Last Name"
-              name="lastName"
-              value={user.lastname}
-              onChange={(e) => setName({ ...name, lastname: e.target.value })}
+              name="lastname"
+              value={user.name.lastname}
+              onChange={handleChange}
               required
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={12}>
             <TextField
               fullWidth
               label="Phone"
@@ -79,7 +98,7 @@ const UserForm = ({ onCloseModal }) => {
               required
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={12}>
             <TextField
               fullWidth
               label="Email"
@@ -91,22 +110,24 @@ const UserForm = ({ onCloseModal }) => {
             />
           </Grid>
         </Grid>
-        <Button
-          variant="contained"
-          type="button"
-          sx={{ mr: 2, mt: 2 }}
-          onClick={onCloseModal}
-        >
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          sx={{ mt: 2 }}
-        >
-          Submit
-        </Button>
+        <Grid container sx={{ padding: "15px 0" }}>
+          <Button
+            variant="contained"
+            type="button"
+            sx={{ mr: 2, mt: 2 }}
+            onClick={onCloseModal}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
+            Submit
+          </Button>
+        </Grid>
       </form>
     </Container>
   );

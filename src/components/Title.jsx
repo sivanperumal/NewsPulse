@@ -2,8 +2,7 @@ import { Box, Typography, Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import AddIcon from "@mui/icons-material/Add";
 
-import ModalDialog from "./ModalDialog";
-function Title({ entity, buttonLabel, open, onOpenModal, onCloseModal }) {
+function Title({ entity, buttonLabel, onOpenModal }) {
   return (
     <>
       <Grid container spacing={2} sx={{ marginBottom: "25px" }}>
@@ -32,7 +31,6 @@ function Title({ entity, buttonLabel, open, onOpenModal, onCloseModal }) {
           </Box>
         </Grid>
       </Grid>
-      <ModalDialog open={open} onCloseModal={onCloseModal} entity={entity} />
     </>
   );
 }
