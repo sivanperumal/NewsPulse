@@ -6,9 +6,7 @@ import {
   TextField,
   Typography,
   Link,
-  IconButton,
 } from "@mui/material";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/Auth.context";
 
