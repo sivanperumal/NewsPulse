@@ -8,14 +8,20 @@ import Typography from "@mui/material/Typography";
 import moment from "moment/moment";
 import { Link } from "react-router";
 import { useDispatch } from "react-redux";
-import { addBlogFav } from "../redux/slices/favourite.slice";
+import { addBlogFav, removeBlogFav } from "../redux/slices/favourite.slice";
+import { IconButton } from "@mui/material";
+import { Favorite, FavoriteBorder, Visibility } from "@mui/icons-material";
 
 export default function BlogCard(props) {
   const { urlToImage, title, description, publishedAt, url } = props.data;
   const dispatch = useDispatch();
   const handleAddWishlist = (data) => {
-    dispatch(addBlogFav(data));
+    dispatch(addBlogFav({ ...data, isFav: true }));
   };
+  const handleRemoveWishlist = (data) => {
+    dispatch(removeBlogFav(data));
+  };
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia component="img" alt={title} height="300" image={urlToImage} />
@@ -35,15 +41,25 @@ export default function BlogCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">
+        <IconButton color="secondary">
           <Link target="_blank" to={url}>
-            View
+            <Visibility />
           </Link>
-        </Button>
-        {!props.fav && (
-          <Button size="small" onClick={() => handleAddWishlist(props.data)}>
-            Add to Wishlist
-          </Button>
+        </IconButton>
+        {!props.data.isFav ? (
+          <IconButton
+            color="default"
+            onClick={() => handleAddWishlist(props.data)}
+          >
+            <FavoriteBorder />
+          </IconButton>
+        ) : (
+          <IconButton
+            color="error"
+            onClick={() => handleRemoveWishlist(props.data)}
+          >
+            <Favorite />
+          </IconButton>
         )}
       </CardActions>
     </Card>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   TextField,
   Button,
@@ -7,17 +7,26 @@ import {
   Grid2 as Grid,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addProductLocal } from "../redux/slices/product.slice";
+import {
+  addProductLocal,
+  setSelectedProductLocal,
+  updateProductLocal,
+  useProducts,
+} from "../redux/slices/product.slice";
 
-const ProductForm = ({ onCloseModal }) => {
+const ProductForm = ({ onCloseModal, formAction }) => {
   const dispatch = useDispatch();
-  const [product, setProduct] = useState({
-    title: "",
-    price: "",
-    description: "",
-    category: "",
-  });
-
+  const { selectedProduct } = useProducts();
+  const [product, setProduct] = useState(
+    formAction === "addForm"
+      ? {
+          title: "",
+          price: "",
+          description: "",
+          category: "",
+        }
+      : selectedProduct
+  );
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
@@ -25,20 +34,16 @@ const ProductForm = ({ onCloseModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const productList = { id: Date.now(), ...product };
-    dispatch(addProductLocal(productList));
+    if (formAction === "addForm") {
+      dispatch(addProductLocal(productList));
+    } else {
+      dispatch(updateProductLocal(product));
+      dispatch(setSelectedProductLocal({}));
+    }
+
+    setProduct("");
     onCloseModal();
   };
-
-  useEffect(() => {
-    return () => {
-      setProduct({
-        title: "",
-        price: "",
-        description: "",
-        category: "",
-      });
-    };
-  }, []);
 
   return (
     <Container maxWidth="sm">

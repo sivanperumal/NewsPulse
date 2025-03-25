@@ -10,25 +10,46 @@ import {
   Avatar,
   Badge,
   ToggleButton,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
-import { Brightness4, Brightness7, Favorite } from "@mui/icons-material";
+import {
+  Brightness4,
+  Brightness7,
+  FavoriteBorder,
+  Close,
+} from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../context/Auth.context";
 import { Link, useNavigate } from "react-router-dom";
-import { useFav } from "../redux/slices/favourite.slice";
+import {
+  removeBlogFav,
+  removeProdFav,
+  useFav,
+} from "../redux/slices/favourite.slice";
 import { useTheme } from "../context/theme.context";
+import { useDispatch } from "react-redux";
 
 function Header() {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorFav, setAnchorFav] = React.useState(null);
   const { logout } = useAuth();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleFav = (event) => {
+    setAnchorFav(event.currentTarget);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleFavClose = () => {
+    setAnchorFav(null);
+    navigate("/favourite/list");
   };
 
   const { blogs, products } = useFav();
@@ -42,7 +63,13 @@ function Header() {
     navigate("/");
     handleClose();
   };
-
+  const handleRemoveFav = (name, item) => {
+    if (name === "product") {
+      dispatch(removeProdFav(item));
+    } else {
+      dispatch(removeBlogFav(item));
+    }
+  };
   return (
     <AppBar
       position="fixed"
@@ -94,13 +121,80 @@ function Header() {
               }}
             /> */}
           </ToggleButton>
-          <IconButton color="inherit">
-            <Badge badgeContent={favCount} color="error">
-              <Link to="/favourite/list">
-                <Favorite />
-              </Link>
-            </Badge>
-          </IconButton>
+
+          {favCount > 0 && (
+            <>
+              <IconButton
+                size="large"
+                aria-label="Favourite Product and Blog list"
+                aria-controls="menu-favbar"
+                aria-haspopup="true"
+                onClick={handleFav}
+                color="primary"
+              >
+                <Badge badgeContent={favCount} color="error">
+                  <FavoriteBorder />
+                </Badge>
+              </IconButton>
+              <Menu
+                id="menu-favbar"
+                anchorEl={anchorFav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorFav)}
+                onClose={handleFavClose}
+              >
+                {products.length > 0 && (
+                  <MenuItem>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      <Link to="/favourite/list">Product Favorite Items</Link>
+                    </Typography>
+                  </MenuItem>
+                )}
+
+                {products?.map((product) => {
+                  return (
+                    <MenuItem key={product.id}>
+                      <ListItemText primary={product.title.showDots(18)} />
+                      <ListItemIcon
+                        onClick={() => handleRemoveFav("product", product)}
+                      >
+                        <Close fontSize="small" />
+                      </ListItemIcon>
+                    </MenuItem>
+                  );
+                })}
+
+                {blogs.length > 0 && (
+                  <MenuItem>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      <Link to="/favourite/list">Blog Favorite Items</Link>
+                    </Typography>
+                  </MenuItem>
+                )}
+                {blogs?.map((blog, index) => {
+                  return (
+                    <MenuItem key={index}>
+                      <ListItemText primary={blog.title.showDots(18)} />
+                      <ListItemIcon
+                        onClick={() => handleRemoveFav("blog", blog)}
+                      >
+                        <Close fontSize="small" />
+                      </ListItemIcon>
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+            </>
+          )}
+
           <IconButton
             size="large"
             aria-label="account of current user"

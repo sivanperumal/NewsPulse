@@ -13,13 +13,24 @@ const FavouriteSlice = createSlice({
     addBlogFav: (state, action) => {
       state.blogs.push(action.payload);
     },
+    removeBlogFav: (state, action) => {
+      state.blogs = state.blogs.filter(
+        (blog) => blog.title !== action.payload.title
+      );
+    },
     addProdFav: (state, action) => {
       state.products.push(action.payload);
+    },
+    removeProdFav: (state, action) => {
+      state.products = state.products.filter(
+        (product) => product.id !== action.payload.id
+      );
     },
   },
 });
 
-export const { addBlogFav, addProdFav } = FavouriteSlice.actions;
+export const { addBlogFav, addProdFav, removeProdFav, removeBlogFav } =
+  FavouriteSlice.actions;
 
 export default FavouriteSlice.reducer;
 
