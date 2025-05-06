@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import BlogsReducer from "./slices/blog.slice";
-import ProductReducer from "./slices/product.slice";
-import UserReducer from "./slices/user.slice";
-import FavouriteReducer from "./slices/favourite.slice";
+import BlogsReducer from "./slices/blog.slice.js";
+import ProductReducer from "./slices/product.slice.js";
+import UserReducer from "./slices/user.slice.js";
+import FavouriteReducer from "./slices/favourite.slice.js";
 
 const rootReducer = combineReducers({
   blogs: BlogsReducer,

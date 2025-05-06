@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useSelector } from "react-redux";
+const userApiUrl = process.env.USER_API_URL;
 
 export const GetUsers = createAsyncThunk("Users/GetUsers", async () => {
   try {
-    const res = await axios.get("https://fakestoreapi.com/users");
+    const res = await axios.get(`${userApiUrl}`);
     return res.data;
   } catch (e) {
     console.error(e);

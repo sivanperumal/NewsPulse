@@ -67,6 +67,7 @@ function List() {
       dispatch(removeUserLocal(user));
     }
   };
+
   return (
     <>
       <Title
